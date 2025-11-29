@@ -1,0 +1,12 @@
+[submodule "MIND"]
+	path = MIND
+	url = https://github.com/who-sam/MIND.git
+[submodule "mind-infra-pipeline"]
+	path = mind-infra-pipeline
+	url = https://github.com/who-sam/mind-infra-pipeline.git
+[submodule "mind-jenkins-ci-pipeline"]
+	path = mind-jenkins-ci-pipeline
+	url = https://github.com/who-sam/mind-jenkins-ci-pipeline.git
+[submodule "mind-argocd-pipeline"]
+	path = mind-argocd-pipeline
+	url = https://github.com/who-sam/mind-argocd-pipeline.git
