@@ -1,0 +1,64 @@
+# Custom Prometheus Configuration
+# Use this for more control over your installation
+# Usage: helm install prometheus prometheus-community/kube-prometheus-stack -f prometheus-values.yaml
+
+# Global settings
+global:
+  scrapeInterval: 30s
+  evaluationInterval: 30s
+
+# Prometheus configuration
+prometheus:
+  prometheusSpec:
+    # Resource limits
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: 2000m
+        memory: 4Gi
+    
+    # How long to keep data
+    retention: 15d
+    retentionSize: "10GB"
+    
+    # Storage
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 20Gi
+    
+    # Monitor all namespaces
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+
+# AlertManager (for sending alerts)
+alertmanager:
+  enabled: true
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ['alertname', 'cluster']
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 12h
+      receiver: 'null'
+    receivers:
+    - name: 'null'
+
+# Grafana (disable if installing separately)
+grafana:
+  enabled: false
+
+# Node exporter (collects node metrics)
+nodeExporter:
+  enabled: true
+
+# Kube-state-metrics (collects k8s object metrics)
+kubeStateMetrics:
+  enabled: true

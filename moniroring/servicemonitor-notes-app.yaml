@@ -1,0 +1,37 @@
+# ServiceMonitor tells Prometheus to scrape metrics from your MIND application
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: notes-app-monitor
+  namespace: monitoring
+  labels:
+    app: notes-app
+spec:
+  selector:
+    matchLabels:
+      app: backend  # Matches your backend service
+  namespaceSelector:
+    matchNames:
+      - notes-app
+  endpoints:
+  - port: http
+    interval: 30s
+    path: /metrics  # Your app needs to expose metrics here
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: postgres-monitor
+  namespace: monitoring
+  labels:
+    app: postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  namespaceSelector:
+    matchNames:
+      - notes-app
+  endpoints:
+  - port: metrics
+    interval: 30s
